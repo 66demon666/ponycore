@@ -39,4 +39,59 @@
 
 По мере разработки я буду писать подробную документацию к каждом у модулю, потому что есть у меня такая привычка как забывать то, что я написал 3 дня назад.
 
-# Если кто-то наткнется на этотт репозиторий - конструктивная критика только приветствуется, неконструктивная - прочь :)
+### Если кто-то наткнется на этотт репозиторий - конструктивная критика только приветствуется, неконструктивная - прочь :)
+
+# Документация (чтобы не забыть :) )
+## Роутинг (Framework\web\routing)
+
+В папке Web/Routing лежат 3 (на данный момент) класса, отвечающие за обработку запроса:
+
+- Route - класс единицы маршрута, для удобства обработки маршрутов, имплементирует интерфейс RouteInterface
+- Dispatcher - класс для добавления маршрутов и поиск нужных. Имплементирует интерфейс DispatcherInterface
+- Router - класс, в котором происходит добавление маршрутов и их обработчиков (анонимных функций)
+
+### Dispatcher
+
+>Статический класс
+
+#### Свойства:
+
+- routes - массив для хранения объектов типа "Route"
+#### Константы:
+- FOUND - нужна в случае, если искомый маршрут найден
+- METHOD_NOT_ALLOWED - если такой маршрут есть, но метод не входит в число допустимых
+- NOT_FOUND - если похожих маршрутов вообще нет
+
+#### Методы:
+- addRoute - создает новый экземпляр Route и добавляет к себе в массив
+`public static function addRoute(string $methods, string $pattern, \Closure $callback):void`
+- dispatch - ищет нужный маршрут и возвращает результат поиска (и) объект Route
+`public static function dispatch():array`
+
+Возвращает индексированый массив с индексами "status" с константой (найдено или нет) и, если найдено, то индексом "route" с объектом Route;
+
+Пример использования:
+
+``` Dispatcher::addRoute('POST,GET', '/test-route', function(){
+        echo 'post, get method';
+    });
+
+    $dispatchResult = Dispatcher::dispatch();
+    switch ($dispatchResult['status']) {
+      case Dispatcher::NOT_FOUND:
+        echo "error 404";
+        break;
+      case Dispatcher::METHOD_NOT_ALLOWED:
+        echo "method not allowed";
+        break;
+      case Dispatcher::FOUND:
+        echo "Found:<br>";
+        call_user_func($dispatchResult['route']->callback);
+        break;
+    }```
+
+    Как можно понять, структуру я попытался стырить у FastRoute
+
+
+
+

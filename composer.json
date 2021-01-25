@@ -1,0 +1,19 @@
+{
+    "name": "morsclamor/ponycore",
+    "authors": [
+        {
+            "name": "MorsClamor",
+            "email": "66demon6666@gmail.com"
+        }
+    ],
+    "autoload": {
+      "psr-4": {
+        "Framework\\": "Framework",
+        "Framework\\libs\\": "Framework/Libs",
+        "Framework\\web\\": "Framework/Web",
+        "Framework\\interfaces\\": "Framework/Interfaces",
+        "Framework\\web\\routing\\": "Framework/Web/Routing"
+      }
+    },
+    "require": {}
+}
